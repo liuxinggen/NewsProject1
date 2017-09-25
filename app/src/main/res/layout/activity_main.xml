@@ -5,12 +5,11 @@
     android:background="#fff"
     android:orientation="vertical">
 
-    <include layout="@layout/common_title_layout"></include>
-
-    <FrameLayout
+    <com.gengen.news.newsproject.views.NoScrollViewPager
+        android:id="@+id/vp_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"></FrameLayout>
+        android:layout_weight="1"></com.gengen.news.newsproject.views.NoScrollViewPager>
 
 
     <include layout="@layout/main_bottom_layout"></include>

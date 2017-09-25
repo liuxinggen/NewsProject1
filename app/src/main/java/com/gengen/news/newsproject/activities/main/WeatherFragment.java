@@ -13,15 +13,16 @@ import com.gengen.news.newsproject.base.BaseFragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFragment extends BaseFragment {
+public class WeatherFragment extends BaseFragment {
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        viewroot=inflater.inflate(R.layout.fragment_news, container, false);
+        viewroot=inflater.inflate(R.layout.fragment_weather, container, false);
         setViewroot(viewroot);
-        initCommonTopBar(getResources().getString(R.string.news),1);
+        initCommonTopBar(getResources().getString(R.string.weather),1);
         return viewroot;
     }
 
