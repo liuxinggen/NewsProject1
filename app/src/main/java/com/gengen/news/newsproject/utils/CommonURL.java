@@ -15,9 +15,15 @@ public class CommonURL {
     /**
      * 新闻用户key值
      */
-    public static final String KEY = "552ec8cb7f105b74ae144c5a5bfd8fd7";
-
-
+    public static final String KEY_NEWS = "552ec8cb7f105b74ae144c5a5bfd8fd7";
+    /**
+     * 笑话网络请求url
+     */
+    public static final String JOKESURL = "http://japi.juhe.cn/joke/img/text.from";
+    /**
+     * 笑话用户key值
+     */
+    public static final String KEY_JOKE = "1186ca08b861129b0dbf58bdd2a00cd8";
 
 
 }

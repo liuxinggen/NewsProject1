@@ -1,5 +1,7 @@
 package com.gengen.news.newsproject.bean;
 
+import java.io.Serializable;
+
 /**
  * project name NewsProject
  * package name com.gengen.news.newsproject.bean
@@ -7,7 +9,7 @@ package com.gengen.news.newsproject.bean;
  * on 2017/9/25
  * at 17:01
  */
-public class News {
+public class News implements Serializable{
 
     private String title;
     private String type;

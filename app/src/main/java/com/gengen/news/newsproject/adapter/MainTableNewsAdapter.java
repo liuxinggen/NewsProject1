@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.gengen.news.newsproject.activities.news.NewsTypeFragment;
 import com.gengen.news.newsproject.bean.News;
+import com.gengen.news.newsproject.utils.LogUtils;
 
 import java.util.List;
 
@@ -32,8 +33,9 @@ public class MainTableNewsAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        LogUtils.i("position", "" + position);
         return new NewsTypeFragment()
-                .newInstance(news.get(position).getType());
+                .newInstance(news, position);
     }
 
     @Override

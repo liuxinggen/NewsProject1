@@ -59,7 +59,7 @@ public class NewsFragment extends BaseFragment {
      */
     private void initTabTitle() {
         newsList = new ArrayList<>();
-        newsList.add(new News("推荐", Constans.TOP));
+        newsList.add(new News("头条", Constans.TOP));
         newsList.add(new News("社会", Constans.SHEHUI));
         newsList.add(new News("国内", Constans.GUONEI));
         newsList.add(new News("国际", Constans.GUOJI));

@@ -2,7 +2,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.gengen.news.newsproject.activities.main.JokeFragment">
+    android:orientation="vertical"
+    tools:context="com.gengen.news.newsproject.activities.news.NewsTypeFragment">
 
     <include layout="@layout/common_title_layout"></include>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipwlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/common_recyclerview_layout"></include>
+
+            <include layout="@layout/common_nodata_layout"></include>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

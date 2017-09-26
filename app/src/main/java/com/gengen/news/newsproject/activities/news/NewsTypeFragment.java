@@ -18,15 +18,18 @@ import android.widget.Toast;
 import com.gengen.news.newsproject.R;
 import com.gengen.news.newsproject.adapter.NewsDatasAdapter;
 import com.gengen.news.newsproject.base.BaseFragment;
+import com.gengen.news.newsproject.bean.News;
 import com.gengen.news.newsproject.db.dbNewsData;
 import com.gengen.news.newsproject.net.OkhttpUtils;
 import com.gengen.news.newsproject.net.Utility;
 import com.gengen.news.newsproject.utils.CommonURL;
 import com.gengen.news.newsproject.utils.Constans;
+import com.gengen.news.newsproject.utils.LogUtils;
 
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,7 +62,8 @@ public class NewsTypeFragment extends BaseFragment {
      * 获取类型type
      */
     private String type;
-
+    private int index;
+    private List<News> news;
 
     //数据适配器
     private NewsDatasAdapter datasAdapter;
@@ -69,10 +73,11 @@ public class NewsTypeFragment extends BaseFragment {
     private List<dbNewsData> listDatadb = null;
 
 
-    public static NewsTypeFragment newInstance(String type) {
+    public static NewsTypeFragment newInstance(List<News> news, int positon) {
         NewsTypeFragment newsTypeFragment = new NewsTypeFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("type", type);
+        bundle.putSerializable("news", (Serializable) news);
+        bundle.putInt("positon", positon);
         newsTypeFragment.setArguments(bundle);
         return newsTypeFragment;
     }
@@ -84,9 +89,10 @@ public class NewsTypeFragment extends BaseFragment {
         viewroot = inflater.inflate(R.layout.fragment_news_type, container, false);
         unbinder = ButterKnife.bind(this, viewroot);
         activity = getActivity();
+        news = (List<News>) getArguments().getSerializable("news");
+        index = getArguments().getInt("positon", 0);
         initView();
         initEvent();
-        type = getArguments().getString("type", null);
         return viewroot;
     }
 
@@ -109,23 +115,20 @@ public class NewsTypeFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        type = news.get(index).getType();
         if (!TextUtils.isEmpty(type)) {
             queryData(type);
         } else {
             getFailure("参数传递错误", true);
         }
-        datasAdapter.notifyDataSetChanged();
     }
 
     private void initView() {
-        commonRecyclerviewLl.setVisibility(View.VISIBLE);
-        llNodata.setVisibility(View.GONE);
         datasAdapter = new NewsDatasAdapter(activity, listDatadb);
         commonRecycerview.setLayoutManager(new LinearLayoutManager(activity));
         commonRecycerview.setAdapter(datasAdapter);
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.red),
                 getResources().getColor(R.color.blue), getResources().getColor(R.color.green));
-
     }
 
     /**
@@ -134,10 +137,12 @@ public class NewsTypeFragment extends BaseFragment {
      * @param type
      */
     private void queryDatafromServer(final String type) {
-        String url = CommonURL.NEWSURL + "?type=" + type + "&key=" + CommonURL.KEY;
+        String url = CommonURL.NEWSURL + "?type=" + type + "&key=" + CommonURL.KEY_NEWS;
+        LogUtils.i("NEWS_URL", url);
         OkhttpUtils.sendOkhttpRequest(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                commonRecyclerviewLl.setVisibility(View.GONE);
                 getFailure("网络错误", true);
             }
 
@@ -158,6 +163,7 @@ public class NewsTypeFragment extends BaseFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            commonRecyclerviewLl.setVisibility(View.GONE);
                             getFailure("数据获取失败，请稍后重试", false);
                         }
                     });
@@ -201,7 +207,7 @@ public class NewsTypeFragment extends BaseFragment {
          * 根据不同的type来查询数据
          */
         listDatadb = DataSupport.where("category=?",
-                String.valueOf(type)).find(dbNewsData.class);
+                String.valueOf(news.get(index).getTitle())).find(dbNewsData.class);
         if (listDatadb.size() > 0) {
             datasAdapter.notifyDataSetChanged();
         } else {
