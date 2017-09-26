@@ -9,22 +9,7 @@ import org.litepal.crud.DataSupport;
  * on 2017/9/25
  * at 10:29
  */
-public class DataKeji extends DataSupport {
-
-
-    /**
-     * uniquekey : d4ce5c0669e28723255595bccfd75588
-     * title : 浙江民房凌晨大火致11死
-     * date : 2017-09-25 10:21
-     * category : 社会
-     * author_name : 凤凰网
-     * url : http://mini.eastday.com/mobile/170925102134223.html
-     * thumbnail_pic_s : http://01.imgmini.eastday.com/mobile/20170925/20170925102134_ad2e6b7f5e28c59b01b8814620e30c2e_4_mwpm_03200403.jpg
-     * thumbnail_pic_s02 : http://01.imgmini.eastday.com/mobile/20170925/20170925102134_ad2e6b7f5e28c59b01b8814620e30c2e_2_mwpm_03200403.jpg
-     * thumbnail_pic_s03 : http://01.imgmini.eastday.com/mobile/20170925/20170925102134_ad2e6b7f5e28c59b01b8814620e30c2e_1_mwpm_03200403.jpg
-     */
-
-
+public class dbNewsData extends DataSupport {
     private String uniquekey;
     private String title;
     private String date;
@@ -34,6 +19,21 @@ public class DataKeji extends DataSupport {
     private String thumbnail_pic_s;
     private String thumbnail_pic_s02;
     private String thumbnail_pic_s03;
+
+    public dbNewsData(String uniquekey, String title, String date,
+                      String category, String author_name, String url,
+                      String thumbnail_pic_s,
+                      String thumbnail_pic_s02, String thumbnail_pic_s03) {
+        this.uniquekey = uniquekey;
+        this.title = title;
+        this.date = date;
+        this.category = category;
+        this.author_name = author_name;
+        this.url = url;
+        this.thumbnail_pic_s = thumbnail_pic_s;
+        this.thumbnail_pic_s02 = thumbnail_pic_s02;
+        this.thumbnail_pic_s03 = thumbnail_pic_s03;
+    }
 
     public String getUniquekey() {
         return uniquekey;

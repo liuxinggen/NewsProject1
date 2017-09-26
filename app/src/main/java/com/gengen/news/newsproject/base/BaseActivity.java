@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gengen.news.newsproject.R;
 import com.gengen.news.newsproject.utils.Constans;
@@ -50,6 +51,11 @@ public class BaseActivity extends AppCompatActivity {
     protected TextView commonTopSubmitTv;
     protected ImageView commonTopSubmitIv;
     /**
+     * 暂无数据的界面显示
+     */
+    protected LinearLayout llNodata;
+    protected TextView tvNodata;
+    /**
      * 公共的对话框
      */
     protected android.support.v7.app.AlertDialog dialogHelper;
@@ -70,6 +76,7 @@ public class BaseActivity extends AppCompatActivity {
 
     /**
      * 初始化页面顶部工具栏
+     *
      * @param title
      * @param type
      */
@@ -90,6 +97,22 @@ public class BaseActivity extends AppCompatActivity {
         commonTopSubmitTv = (TextView) this.findViewById(R.id.tv_submit);
         commonTopSubmitIv = (ImageView) this.findViewById(R.id.iv_submit);
 
+    }
+
+    /**
+     * 显示暂无数据
+     *
+     * @param msg
+     * @param isShow
+     */
+    protected void getFailure(String msg, boolean isShow) {
+        if (isShow) {
+            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+        }
+        llNodata = (LinearLayout) this.findViewById(R.id.ll_nodata);
+        tvNodata = (TextView) this.findViewById(R.id.tv_nodata);
+        llNodata.setVisibility(View.VISIBLE);
+        tvNodata.setText(msg);
     }
 
 

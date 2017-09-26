@@ -15,7 +15,7 @@ import okhttp3.Request;
 public class OkhttpUtils {
 
     //get请求
-    private static void sendOkhttpRequest(String url, Callback callback) {
+    public static void sendOkhttpRequest(String url, Callback callback) {
 
         //拿到OkHttpClient对象
         OkHttpClient client = new OkHttpClient();

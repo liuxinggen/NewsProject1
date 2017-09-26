@@ -14,6 +14,19 @@ public class Constans {
      * 常量类
      */
     public static BaseActivity activity;
+    /**
+     * type类型
+     */
+    public static final String TOP = "top";
+    public static final String SHEHUI = "shehui";
+    public static final String GUONEI = "guonei";
+    public static final String GUOJI = "guoji";
+    public static final String YULE = "yule";
+    public static final String TIYU = "tiyu";
+    public static final String JUNSHI = "junshi";
+    public static final String KEJI = "keji";
+    public static final String CAIJING = "caijing";
+    public static final String SHISHANG = "shishang";
 
 
 }

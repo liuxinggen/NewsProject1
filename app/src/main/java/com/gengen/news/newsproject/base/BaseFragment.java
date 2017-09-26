@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gengen.news.newsproject.R;
 
@@ -54,6 +55,11 @@ public class BaseFragment extends Fragment {
     protected LinearLayout commonTopSubmitLL;
     protected TextView commonTopSubmitTv;
     protected ImageView commonTopSubmitIv;
+    /**
+     * 暂无数据的界面显示
+     */
+    protected LinearLayout llNodata;
+    protected TextView tvNodata;
     /**
      * 公共的对话框
      */
@@ -102,6 +108,21 @@ public class BaseFragment extends Fragment {
         commonTopSubmitTv = (TextView) viewroot.findViewById(R.id.tv_submit);
         commonTopSubmitIv = (ImageView) viewroot.findViewById(R.id.iv_submit);
 
+    }
+    /**
+     * 显示暂无数据
+     *
+     * @param msg
+     * @param isShow
+     */
+    protected void getFailure(String msg, boolean isShow) {
+        if (isShow) {
+            Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+        }
+        llNodata = (LinearLayout) viewroot.findViewById(R.id.ll_nodata);
+        tvNodata = (TextView) viewroot.findViewById(R.id.tv_nodata);
+        llNodata.setVisibility(View.VISIBLE);
+        tvNodata.setText(msg);
     }
 
 }
