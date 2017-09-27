@@ -20,6 +20,7 @@ import com.gengen.news.newsproject.db.dbJokeData;
 import com.gengen.news.newsproject.net.OkhttpUtils;
 import com.gengen.news.newsproject.net.Utility;
 import com.gengen.news.newsproject.utils.CommonURL;
+import com.gengen.news.newsproject.utils.LogUtils;
 
 import org.litepal.crud.DataSupport;
 
@@ -79,14 +80,28 @@ public class JokeFragment extends BaseFragment {
         activity = getActivity();
         unbinder = ButterKnife.bind(this, viewroot);
         initView();
+        initEvent();
         queryData();
         return viewroot;
     }
 
+    private void initEvent() {
+
+        swipwlayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        swipwlayout.setRefreshing(false);
+                        commonRecyclerviewLl.setVisibility(View.VISIBLE);
+                        getFailure("数据请求失败，请稍后重试", false);
+                        queryDatafromService();
+                    }
+                });
+    }
+
     private void initView() {
-        jokeAdapter = new JokeDatasAdapter(activity, jokeList);
         commonRecycerview.setLayoutManager(new LinearLayoutManager(activity));
-        commonRecycerview.setAdapter(jokeAdapter);
+
     }
 
     /**
@@ -95,24 +110,33 @@ public class JokeFragment extends BaseFragment {
     private void queryData() {
         jokeList = DataSupport.findAll(dbJokeData.class);
         if (jokeList.size() > 0) {
-            jokeAdapter.notifyDataSetChanged();
+            jokeAdapter = new JokeDatasAdapter(activity, jokeList);
+            commonRecycerview.setAdapter(jokeAdapter);
         } else {
             queryDatafromService();
         }
-
-
     }
 
     /**
      * 从服务端获取数据
      */
     private void queryDatafromService() {
-        String url = CommonURL.JOKESURL + "?&pagesize=10"
-                + "&key=" + CommonURL.KEY_JOKE;
+        long time = System.currentTimeMillis();
+        String timeStr = String.valueOf(time).substring(0,10);
+        String url = CommonURL.JOKESURL + "?sort=" + CommonURL.SORT + "&pagesize=10"
+                + "&time=" + timeStr + "&key=" + CommonURL.KEY_JOKE;
+        LogUtils.i("JOKE_URL", url);
         OkhttpUtils.sendOkhttpRequest(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                getFailure("网络错误", false);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        commonRecyclerviewLl.setVisibility(View.GONE);
+                        getFailure("网络错误", false);
+                    }
+                });
+
             }
 
             @Override
@@ -121,12 +145,11 @@ public class JokeFragment extends BaseFragment {
                 String responseStr = response.body().string();
                 boolean result = false;
                 result = Utility.handlerJokeRequest(responseStr);
-
                 if (result) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            jokeAdapter.notifyDataSetChanged();
+                            queryData();
                         }
                     });
                 } else {

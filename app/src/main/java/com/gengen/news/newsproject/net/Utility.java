@@ -103,6 +103,8 @@ public class Utility {
         dbJokeData dbJokeData = null;
         List<JokeBean.ResultBean.DataBean> resultList =
                 jokeBean.getResult().getData();
+        //删除数据
+        DataSupport.deleteAll(dbJokeData.class);
         for (int i = 0; i < resultList.size(); i++) {
             JokeBean.ResultBean.DataBean dataBean = resultList.get(i);
             dbJokeData = new dbJokeData(dataBean.getContent(), dataBean.getHashId(),

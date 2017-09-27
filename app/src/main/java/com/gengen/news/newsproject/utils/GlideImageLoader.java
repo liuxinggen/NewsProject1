@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.util.Util;
 
 /**
@@ -25,6 +26,21 @@ public class GlideImageLoader {
         if (Util.isOnMainThread()) {
             //Glide 加载图片用法
             Glide.with(context).load(path).into(imageView);
+        }
+    }
+
+    public void displayGifImage(Context context, Object path, ImageView imageView) {
+        if (Util.isOnMainThread()) {
+            if ("gif".indexOf((String) path) > -1) {
+                //Glide 加载gif图片用法
+                Glide.with(context)
+                        .asGif()
+                        .load(path)
+                        .into(imageView);
+            } else {
+                //Glide 加载图片用法
+                Glide.with(context).load(path).into(imageView);
+            }
         }
     }
 }

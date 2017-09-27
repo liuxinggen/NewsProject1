@@ -35,6 +35,8 @@ public class NewsDatasViewHolder extends RecyclerView.ViewHolder {
     ImageView imThree03;
     @BindView(R.id.three_im_layout)
     LinearLayout threeImLayout;
+    @BindView(R.id.news_item_layout)
+    LinearLayout newsItemLayout;
     @BindView(R.id.tv_show_autor)
     TextView tvShowAutor;
     @BindView(R.id.tv_show_time)

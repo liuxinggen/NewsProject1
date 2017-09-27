@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.gengen.news.newsproject.R;
 import com.gengen.news.newsproject.db.dbNewsData;
+import com.gengen.news.newsproject.listenter.OnItemClickListenter;
 import com.gengen.news.newsproject.utils.GlideImageLoader;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public class NewsDatasAdapter<T> extends RecyclerView.Adapter<NewsDatasViewHolde
 
     private Context context;
 
+    private OnItemClickListenter onItemClickListenter;
+
     // 构造方法，传入
     public NewsDatasAdapter(Context context, List<T> datas) {
         this.datas = datas;
@@ -39,7 +42,7 @@ public class NewsDatasAdapter<T> extends RecyclerView.Adapter<NewsDatasViewHolde
     }
 
     @Override
-    public void onBindViewHolder(NewsDatasViewHolder holder, int position) {
+    public void onBindViewHolder(NewsDatasViewHolder holder, final int position) {
         //绑定数据
         dbNewsData dbNewsData = (dbNewsData) datas.get(position);
         if (dbNewsData.getThumbnail_pic_s02() != null &&
@@ -70,10 +73,25 @@ public class NewsDatasAdapter<T> extends RecyclerView.Adapter<NewsDatasViewHolde
         holder.tvShowAutor.setText(dbNewsData.getAuthor_name());
         holder.tvShowTime.setText(dbNewsData.getDate());
 
+        holder.newsItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getOnItemClickListenter().onClick(v, position);
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return datas == null ? 0 : datas.size();
+    }
+
+    public OnItemClickListenter getOnItemClickListenter() {
+        return onItemClickListenter;
+    }
+
+    public void setOnItemClickListenter(OnItemClickListenter onItemClickListenter) {
+        this.onItemClickListenter = onItemClickListenter;
     }
 }

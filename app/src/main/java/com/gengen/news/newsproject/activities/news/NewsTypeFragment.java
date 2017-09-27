@@ -1,6 +1,7 @@
 package com.gengen.news.newsproject.activities.news;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,6 +21,7 @@ import com.gengen.news.newsproject.adapter.NewsDatasAdapter;
 import com.gengen.news.newsproject.base.BaseFragment;
 import com.gengen.news.newsproject.bean.News;
 import com.gengen.news.newsproject.db.dbNewsData;
+import com.gengen.news.newsproject.listenter.OnItemClickListenter;
 import com.gengen.news.newsproject.net.OkhttpUtils;
 import com.gengen.news.newsproject.net.Utility;
 import com.gengen.news.newsproject.utils.CommonURL;
@@ -106,7 +108,7 @@ public class NewsTypeFragment extends BaseFragment {
                     public void onRefresh() {
                         mSwipeRefreshLayout.setRefreshing(false);
                         commonRecyclerviewLl.setVisibility(View.VISIBLE);
-                        llNodata.setVisibility(View.GONE);
+                        getFailure("数据请求失败，请稍后重试", false);
                         queryDatafromServer(type);
                     }
                 });
@@ -121,6 +123,7 @@ public class NewsTypeFragment extends BaseFragment {
         } else {
             getFailure("参数传递错误", true);
         }
+
     }
 
     private void initView() {
@@ -187,13 +190,22 @@ public class NewsTypeFragment extends BaseFragment {
          */
         String title = null;
 //        if (!("时尚".equals(news.get(index).getTitle()))) {
-            title = news.get(index).getTitle();
+        title = news.get(index).getTitle();
 //        }
         listDatadb = DataSupport.where("category=?",
                 String.valueOf(title)).find(dbNewsData.class);
         if (listDatadb.size() > 0) {
             datasAdapter = new NewsDatasAdapter(activity, listDatadb);
             commonRecycerview.setAdapter(datasAdapter);
+            datasAdapter.setOnItemClickListenter(new OnItemClickListenter() {
+                @Override
+                public void onClick(View arg1, int position) {
+                    Intent intent = new Intent(activity, DetailsActivity.class);
+                    intent.putExtra("title", news.get(index).getTitle());
+                    intent.putExtra("url", listDatadb.get(position).getUrl());
+                    startActivity(intent);
+                }
+            });
         } else {
             queryDatafromServer(type);
         }

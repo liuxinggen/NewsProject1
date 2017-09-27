@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/news_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
+
 
     <include layout="@layout/news_datas_show_one_layout"></include>
 
@@ -10,5 +13,9 @@
 
     <include layout="@layout/common_news_info_layout"></include>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_space_10"
+        android:background="@color/background_color"></View>
 </LinearLayout>
 
