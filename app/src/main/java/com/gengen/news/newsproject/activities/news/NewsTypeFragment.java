@@ -124,9 +124,8 @@ public class NewsTypeFragment extends BaseFragment {
     }
 
     private void initView() {
-        datasAdapter = new NewsDatasAdapter(activity, listDatadb);
         commonRecycerview.setLayoutManager(new LinearLayoutManager(activity));
-        commonRecycerview.setAdapter(datasAdapter);
+
         mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.red),
                 getResources().getColor(R.color.blue), getResources().getColor(R.color.green));
     }
@@ -142,8 +141,14 @@ public class NewsTypeFragment extends BaseFragment {
         OkhttpUtils.sendOkhttpRequest(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                commonRecyclerviewLl.setVisibility(View.GONE);
-                getFailure("网络错误", true);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        commonRecyclerviewLl.setVisibility(View.GONE);
+                        getFailure("网络错误", true);
+                    }
+                });
+
             }
 
             @Override
@@ -171,32 +176,6 @@ public class NewsTypeFragment extends BaseFragment {
                 }
             }
         });
-
-//        switch (type) {
-//            case Constans.TOP:
-//
-//                break;
-//            case Constans.SHEHUI:
-//                break;
-//            case Constans.GUONEI:
-//                break;
-//            case Constans.GUOJI:
-//                break;
-//            case Constans.YULE:
-//                break;
-//            case Constans.TIYU:
-//                break;
-//            case Constans.JUNSHI:
-//                break;
-//            case Constans.KEJI:
-//                break;
-//            case Constans.CAIJING:
-//                break;
-//            case Constans.SHISHANG:
-//                break;
-//        }
-
-
     }
 
     /**
@@ -206,10 +185,15 @@ public class NewsTypeFragment extends BaseFragment {
         /**
          * 根据不同的type来查询数据
          */
+        String title = null;
+//        if (!("时尚".equals(news.get(index).getTitle()))) {
+            title = news.get(index).getTitle();
+//        }
         listDatadb = DataSupport.where("category=?",
-                String.valueOf(news.get(index).getTitle())).find(dbNewsData.class);
+                String.valueOf(title)).find(dbNewsData.class);
         if (listDatadb.size() > 0) {
-            datasAdapter.notifyDataSetChanged();
+            datasAdapter = new NewsDatasAdapter(activity, listDatadb);
+            commonRecycerview.setAdapter(datasAdapter);
         } else {
             queryDatafromServer(type);
         }

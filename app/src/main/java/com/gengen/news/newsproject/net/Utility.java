@@ -83,6 +83,9 @@ public class Utility {
         DataSupport.deleteAll(dbNewsData.class);
         for (int i = 0; i < resultList.size(); i++) {
             NewsBean.ResultBean.DataBean dataBean = resultList.get(i);
+            if(TextUtils.isEmpty(dataBean.getCategory())){
+                dataBean.setCategory("时尚");
+            }
             dbNewsData = new dbNewsData(dataBean.getUniquekey(), dataBean.getTitle(),
                     dataBean.getDate(), dataBean.getCategory(), dataBean.getAuthor_name(),
                     dataBean.getUrl(), dataBean.getThumbnail_pic_s(),
